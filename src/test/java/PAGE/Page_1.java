@@ -9,10 +9,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -24,13 +26,14 @@ public class Page_1
 	By Pass = By.xpath("//*[@id=\"notion-password-input-2\"]");
 	By EClick = By.xpath("//*[@id=\"notion-app\"]/div/div[1]/div/div/main/div[1]/section/div/div/div/div[2]/div[1]/div[2]/form/div[4]");
 	By PClick = By.xpath("//*[@id=\"notion-app\"]/div/div[1]/div/div/main/div[1]/section/div/div/div/div[2]/div[1]/div[2]/form/div[4]");
-	By Window = By.xpath("//*[@id=':r3:']/div/div/div[2]/div/span");
+	By settings = By.xpath("//*[@id=\"notion-app\"]/div/div[1]/div/nav/div/div/div/div[4]/div[4]/div/div[2]/div[1]/div[2]/div[1]/div/div/div[2]");
+	
 	public  Page_1(WebDriver Driver)
 	{
 		this.Driver = Driver;
 	}
 	
-	// logging in using username and password
+	// logging in using Username and password -- working
 	public void userpass() throws IOException, InterruptedException
 	{
 		File f = new File("D:\\Silenium\\Notion_login.xlsx");
@@ -55,10 +58,10 @@ public class Page_1
 		}
 	}
 	
-	// window handling
-	public void WindowHandle()
+	// window handling and Title Verification working
+	public void WindowHandle() throws InterruptedException
 	{
-		Driver.findElement(Window).click();
+		Driver.findElement(By.xpath("//*[@id=\"notion-app\"]/div/div[1]/div/div[1]/header/div/div[1]/div/div/div[3]/div[2]/div[1]/div/div")).click();
 		
 		String Parent = Driver.getWindowHandle();
 		Set<String> allWindow = Driver.getWindowHandles();
@@ -67,10 +70,25 @@ public class Page_1
 		{
 			if(!Window.equals(Parent))
 			{
-				Driver.switchTo().window(Parent);
+				Driver.switchTo().window(Window);
+			}
+			Thread.sleep(3000);
+			WebElement title = Driver.findElement(By.xpath("//*[text()='Learn about sharing']"));
+			title.click();
+			Thread.sleep(5000);
+			
+			//Title Verification
+			System.out.println(" Page title = " + Driver.getTitle());
+			String TitleOne = title.getText();
+			String TitleTwo = "Document Hub | All Docs";
+			if (TitleOne == TitleTwo)
+			{
+			Driver.switchTo().window(Parent);	
 			}
 		}
 	}
+		
+		
 	
 	//Actions
 	public void Actions()
@@ -82,15 +100,40 @@ public class Page_1
 		Rename.sendKeys("NwProject");
 	}
 	
-	//File Upload
 	
-	public void upload(String f) throws AWTException
+	//File Upload - Profile Picture Change
+	public void upload(String f) throws AWTException, InterruptedException
 	{
-		Driver.findElement(By.xpath("//*[@id=\"notion-app\"]/div/div[1]/div/nav/div/div/div/div[4]/div[1]/div/div[2]/div/div[1]/div[2]/div/div[1]/div[1]"));
-		Driver.findElement(By.xpath("//*[@id=\"notion-app\"]/div/div[2]/div[2]/div/div/div[2]/div[2]/div/div/div/div/div[1]/div[2]/div[1]"));
-		Driver.findElement(By.xpath("//*[@id=\"settings-tab-profile\"]/div/div[2]"));
-		Driver.findElement(By.xpath("//*[@id=\"settings-tabpanel-profile\"]/div/div/div[3]/div[1]/div[1]/div/div/div/div"));
+		Driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		
+		Driver.findElement(By.className("notranslate")).click();
+		
+		String Parent = Driver.getWindowHandle();
+		Set<String> allWindow = Driver.getWindowHandles();
+		for(String Window : allWindow)
+		{
+			if(!Window.equals(Parent))
+			{
+				Driver.switchTo().window(Window);
+			}
+		}
+		
+		Driver.findElement(By.xpath("//*[@id=\"notion-app\"]/div/div[2]/div[2]/div/div/div[2]/div[2]/div/div/div/div/div[1]/div[2]/div[1]")).click();
+		
+		String Parent2 = Driver.getWindowHandle();
+		Set<String> allWindow2 = Driver.getWindowHandles();
+		for(String Window2 : allWindow2)
+		{
+			if(!Window2.equals(Parent2))
+			{
+				Driver.switchTo().window(Window2);
+			}
+		}
+		
+		Driver.findElement(By.xpath("//*[@id=\"settings-tab-profile\"]/div/div[2]/div")).click();
+		Driver.findElement(By.xpath("//*[@id=\"settings-tabpanel-profile\"]/div/div/div[3]/div[1]/div[1]/div/div/div/div")).click();
+		
+		Thread.sleep(2000);
 		StringSelection select = new StringSelection(f);
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(select, null);
 		
@@ -100,7 +143,10 @@ public class Page_1
 		rob.keyRelease(KeyEvent.VK_V);
 		rob.keyRelease(KeyEvent.VK_CONTROL);
 		rob.keyPress(KeyEvent.VK_ENTER);
+		
+		Driver.findElement(By.className("notion-modal-underlay")).click();
 	}
+	
 	
 	//Drag and Drop
 	public void DragDrop()
@@ -111,6 +157,34 @@ public class Page_1
 		
 		act.dragAndDrop(Drag, DragTo).perform();
 	}
+	
+	//Scrolling -- working
+	public void Scroll() throws InterruptedException
+	{
+
+	   String ParentWindow = Driver.getWindowHandle();		
+	   Driver.findElement(settings).click();
+	   
+	   Thread.sleep(5000);
+	   
+
+       // Switch to the new window
+     Set <String> WindowHandles = Driver.getWindowHandles();
+     for (String handle : WindowHandles) 
+     {
+         if (!handle.equals(ParentWindow)) 
+         {
+             Driver.switchTo().window(handle);
+             break;
+         }
+     }
+	
+		Driver.findElement(By.xpath("//*[@id=\"settings-tab-settings\"]/div/div[2]")).click();
+		Thread.sleep(2000);
 		
+		WebElement scrollableDiv = Driver.findElement(By.xpath("//*[@id=\"settings-tabpanel-settings\"]/div/div[1]")); 
+		((JavascriptExecutor) Driver).executeScript( "arguments[0].scrollTop = arguments[0].scrollHeight;", scrollableDiv);
 	}
+		
+        }
 

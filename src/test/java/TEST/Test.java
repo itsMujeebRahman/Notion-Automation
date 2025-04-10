@@ -30,13 +30,7 @@ import PAGE.Page_1;
 			Page_1 P =new Page_1(Driver);
 			P.userpass();
 			Thread.sleep(10000);
-			P.WindowHandle();
-			Thread.sleep(3000);
-			P.Actions();
-			Thread.sleep(3000);
-			P.upload(null);
-			Thread.sleep(3000);
-			P.DragDrop();
+			P.upload("D:\\mujeeb.png");
 			
 		}
 	}
