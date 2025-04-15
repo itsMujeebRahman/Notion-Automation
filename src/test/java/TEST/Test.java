@@ -19,9 +19,10 @@ import PAGE.Page_1;
 		@BeforeMethod
 		public void Start() throws InterruptedException 
 		{
-			Driver.get("https://www.notion.so/login");
+			Driver.get("https://app.todoist.com/auth/login?_gl=1*1x3n4r8*_ga*ODkzNjk5MTg4LjE3NDQ1NDE5Mjc.*_ga_L1YQDZCTV5*MTc0NDU1MzA1OC4yLjAuMTc0NDU1MzA1OC42MC4wLjA.");
 			Driver.manage().window().maximize();
 			Thread.sleep(3000);
+		
 		}
 		
 		@org.testng.annotations.Test
@@ -30,8 +31,9 @@ import PAGE.Page_1;
 			Page_1 P =new Page_1(Driver);
 			P.userpass();
 			Thread.sleep(10000);
-			P.upload("D:\\mujeeb.png");
-			
+
+
+		
 		}
 	}
 	
