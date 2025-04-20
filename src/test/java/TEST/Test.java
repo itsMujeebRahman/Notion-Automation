@@ -41,16 +41,16 @@ import PAGE.WindowHandling;
 		@org.testng.annotations.Test
 		public void Function() throws IOException, InterruptedException, AWTException 
 		{
-			LogIn                   Login   = new LogIn				      (Driver);
+			LogIn                   Login   = new LogIn		      (Driver);
 			TaskCreateAndDelete     Create  = new TaskCreateAndDelete     (Driver);
 			ProfilePhotoUploading   Profile = new ProfilePhotoUploading   (Driver);
 			WindowHandling          Window  = new WindowHandling          (Driver);
-			ThemeChange			    Theme   = new ThemeChange             (Driver);
+			ThemeChange	        Theme   = new ThemeChange             (Driver);
 			ScrollToLastTaskAndEdit Scroll  = new ScrollToLastTaskAndEdit (Driver);
-			ProjectDetailsFilling   Project = new ProjectDetailsFilling	  (Driver);
-			DragAndDropInToday		Drag    = new DragAndDropInToday      (Driver);
-			TaskDetailsFilling      Detail  = new TaskDetailsFilling	  (Driver);
-			LogOut					Logout  = new LogOut				  (Driver);
+			ProjectDetailsFilling   Project = new ProjectDetailsFilling   (Driver);
+			DragAndDropInToday	Drag    = new DragAndDropInToday      (Driver);
+			TaskDetailsFilling      Detail  = new TaskDetailsFilling      (Driver);
+			LogOut			Logout  = new LogOut		      (Driver);
 			
 			
 			Login.userpass("Sheet1");
