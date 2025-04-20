@@ -5,9 +5,9 @@
     <classes>
       <class name="TEST.Test">
         <methods>
-          <include name="login"/>
           <include name="Setup"/>
           <include name="Start"/>
+          <include name="Function"/>
         </methods>
       </class> <!-- TEST.Test -->
     </classes>
